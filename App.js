@@ -9,6 +9,8 @@ import Description from './pages/description';
 import Map from './pages/Map';
 import Result from './pages/Result';
 import SignUp from './pages/SignUp';
+import Appointment from './pages/Appointment';
+import ProfileScreen from './pages/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,8 +27,10 @@ const App = () => {
         <Stack.Screen name="Map" component={Map} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Result" component={Result} />
+        <Stack.Screen name="Appoint" component={Appointment} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer >
   );
 };
 

@@ -9,7 +9,7 @@ const Result = ({ route, navigation }) => {
             <View style={styles.upperContainer}>
                 <Text style={styles.centerText}>{data}</Text>
             </View>
-            <TouchableOpacity style={styles.centerButton}>
+            <TouchableOpacity style={styles.centerButton} onPress={() => navigation.navigate('Appoint')}>
                 <Text style={styles.centerButtonText}>Appoint</Text>
             </TouchableOpacity>
             <View style={styles.centerContent}>

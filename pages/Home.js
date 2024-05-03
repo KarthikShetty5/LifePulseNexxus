@@ -15,8 +15,9 @@ const HomePage = ({ navigation }) => {
 
     const fetchData = async () => {
         // navigation.navigate('Result', { data: "yourData" })
+        console.log("pressed")
         try {
-            const response = await fetch('http://10.0.2.2:5000/predict/naive', {
+            const response = await fetch('http://192.168.24.81:5000/predict/naive', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -118,7 +119,7 @@ const HomePage = ({ navigation }) => {
                     <Picker.Item label="stomach_bleeding" value="stomach_bleeding" />
                 </Picker>
                 <TouchableOpacity onPress={() => {
-                    fetchData();
+                    navigation.navigate('Result', { data: "yourData" })
                 }} style={styles.button}>
                     <Text style={styles.text}>{loading ? "Loading" : "Search"}</Text>
                 </TouchableOpacity>

@@ -1,10 +1,14 @@
-# backend/server.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 app = Flask(__name__)
 
-CORS(app, resources={r"/predict/*": {"origins": "http://10.0.2.2:5000"}})
-
+# CORS(app, resources={r"/predict/*": {"origins": "http://192.168.24.81:8081"}})
+CORS(app)
+cors = CORS(app, resource={
+    r"/*":{
+        "origins":"*"
+    }
+})
 
 import numpy as np
 import pandas as pd
