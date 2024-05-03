@@ -10,23 +10,23 @@ const HomePage = ({ navigation }) => {
     const [selectedValue4, setSelectedValue4] = useState('option1');
     const [selectedValue5, setSelectedValue5] = useState('option1');
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const fetchData = async () => {
-        navigation.navigate('Result', { data: "yourData" })
+        // navigation.navigate('Result', { data: "yourData" })
         try {
-            const response = await fetch('http://192.168.193.81:5000/predict/naive', {
+            const response = await fetch('http://10.0.2.2:5000/predict/naive', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    "s1": selectedValue1,
-                    "s2": selectedValue2,
-                    "s3": selectedValue3,
-                    "s4": selectedValue4,
-                    "s5": selectedValue5
+                    "s1": "chest_pain",
+                    "s2": "back_pain",
+                    "s3": "malaise",
+                    "s4": "mild_fever",
+                    "s5": "constipation"
                 }),
             });
             console.log(response)
@@ -118,7 +118,6 @@ const HomePage = ({ navigation }) => {
                     <Picker.Item label="stomach_bleeding" value="stomach_bleeding" />
                 </Picker>
                 <TouchableOpacity onPress={() => {
-                    setLoading(true);
                     fetchData();
                 }} style={styles.button}>
                     <Text style={styles.text}>{loading ? "Loading" : "Search"}</Text>

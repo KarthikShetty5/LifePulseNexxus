@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TextInput, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 
 const SignUp = ({ navigation }) => {
@@ -10,14 +11,30 @@ const SignUp = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [mobile, setMobile] = useState('');
 
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
         const userData = {
             name: username,
             email: email,
             mobile: mobile,
             password: password
         }
-        axios.post('http:// 192.168.193.81:5001/register', userData).then(res => console.log(res.data)).catch(e => console.log(e));
+        const data = await axios.post('http://192.168.24.81:5001/register', userData);
+        if (data.data.code === 200) {
+            Toast.show({
+                type: 'success',
+                text1: 'Successfully Signed Up',
+                text2: 'Now please Login👋'
+            });
+            setTimeout(() => {
+                navigation.navigate('Login')
+            }, 1500);
+        } else {
+            Toast.show({
+                type: 'error',
+                text1: 'User already Exists',
+                text2: 'Please use other email'
+            });
+        }
     };
 
     return (
@@ -26,6 +43,7 @@ const SignUp = ({ navigation }) => {
             style={styles.background}
             resizeMode="cover"
         >
+            <Toast />
             <View style={styles.container}>
                 <Text style={styles.title}>SignUp</Text>
                 <TextInput

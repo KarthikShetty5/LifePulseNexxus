@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import Toast from 'react-native-toast-message';
 import { View, Text, StyleSheet, ImageBackground, TextInput, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Login = ({ navigation }) => {
@@ -8,14 +10,34 @@ const Login = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        const userData = {
-            name: username,
-            email: "karthikshetty@gmail.com",
-            mobile: "9591142542",
+    const handleLogin = async () => {
+        const LoginData = {
+            email: username,
             password: password
         }
-        axios.post('http:// 192.168.193.81:5001/register', userData).then(res => console.log(res.data)).catch(e => console.log(e));
+        const data = await axios.post('http://192.168.24.81:5001/login', LoginData)
+        if (data.data.code === 200) {
+            Toast.show({
+                type: 'success',
+                text1: 'Logged in sucessfully',
+                text2: 'You are in now👋'
+            });
+            try {
+                const jsonValue = JSON.stringify(data.data.token.token);
+                await AsyncStorage.setItem('user', jsonValue);
+            } catch (e) {
+                // saving error
+            }
+            setTimeout(() => {
+                navigation.navigate('Home')
+            }, 1500);
+        } else {
+            Toast.show({
+                type: 'error',
+                text1: 'Please SignUp',
+                text2: 'No issue SignUp now👋'
+            });
+        }
     };
 
     return (
@@ -24,6 +46,7 @@ const Login = ({ navigation }) => {
             style={styles.background}
             resizeMode="cover"
         >
+            <Toast />
             <View style={styles.container}>
                 <Text style={styles.title}>Login</Text>
                 <TextInput

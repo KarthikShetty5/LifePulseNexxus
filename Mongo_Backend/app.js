@@ -37,21 +37,30 @@ app.post('/register', async (req, res) => {
             token: Array.from({ length: 5 }, () => Math.random().toString(36).charAt(2)).join('')
         });
 
-        res.send({ status: 'Ok', data: "User Created along with token" })
+        res.send({ status: 'Ok', data: "User Created along with token", code: 200 })
     } catch (error) {
-        res.send({ status: "error", data: error })
+        res.send({ status: "error", data: error, code: 400 })
     }
 });
 
-app.get('/login', async (req, res) => {
-    const { email } = req.body;
+
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
     try {
-        const user = await User.findOne({ email: email });
-        res.send({ status: 'Ok', data: user });
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.send({ status: 'error', message: 'User not found', code: 401, token: null });
+        }
+        if (password != user.password) {
+            return res.send({ status: 'error', message: 'Incorrect password', code: 401, token: null });
+        }
+        const token = await Token.findOne({ email });
+        res.send({ status: 'Ok', data: user, code: 200, token: token });
     } catch (error) {
-        res.send({ status: "error", data: error })
+        res.send({ status: 'error', message: 'Internal server error', code: 400 });
     }
 });
+
 
 app.get('/token', async (req, res) => {
     const { email } = req.body;
@@ -84,13 +93,16 @@ app.post('/addHistory', async (req, res) => {
 });
 
 
-app.get('/getHistory', async (req, res) => {
+app.post('/getHistory', async (req, res) => {
     const { token } = req.body;
     try {
         const history = await History.findOne({ token: token });
-        res.send({ status: 'Ok', data: history });
+        if (!history) {
+            return res.send({ status: 'error', message: 'History not found for the given token', code: 401 });
+        }
+        res.send({ status: 'Ok', data: history, code: 200 });
     } catch (error) {
-        res.send({ status: "error", data: error })
+        res.send({ status: "error", data: error, code: 400 })
     }
 });
 

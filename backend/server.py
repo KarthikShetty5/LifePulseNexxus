@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 app = Flask(__name__)
 
-CORS(app, resources={r"/predict/*": {"origins": "http://10.0.2.2:3000"}})
+CORS(app, resources={r"/predict/*": {"origins": "http://10.0.2.2:5000"}})
 
 
 import numpy as np
@@ -175,14 +175,15 @@ def predictDecision():
 @app.route('/predict/naive', methods=['POST'])
 def predictNaive():
     print("heldfghjkx v 6l,.uulo")
-    data = request.get_json()
-    s1 = data.get('s1')
-    s2 = data.get('s2')
-    s3 = data.get('s3')
-    s4 = data.get('s4')
-    s5 = data.get('s5')
-    result = NaiveBayes(s1,s2,s3,s4,s5)
-    return jsonify({'result': result})
+    # data = request.get_json()
+    # s1 = data.get('s1')
+    # s2 = data.get('s2')
+    # s3 = data.get('s3')
+    # s4 = data.get('s4')
+    # s5 = data.get('s5')
+    # result = NaiveBayes(s1,s2,s3,s4,s5)
+    # return jsonify({'result': result})
+    return {"hello":"hello"}
 
 
 @app.route('/predict/random', methods=['POST'])
